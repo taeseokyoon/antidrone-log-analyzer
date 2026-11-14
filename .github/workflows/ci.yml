@@ -25,6 +25,8 @@ jobs:
         run: pytest -q
       - name: Analyze bundled sample data
         run: python -m antidrone_analyzer analyze --data samples --out reports/ci
+      - name: Large-file benchmark (100 MB, reproducibility check)
+        run: python tools/benchmark.py --copies 50
       - uses: actions/upload-artifact@v4
         with:
           name: sample-report-py${{ matrix.python-version }}

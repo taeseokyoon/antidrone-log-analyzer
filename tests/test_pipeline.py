@@ -98,3 +98,14 @@ def test_cli_writes_report(data, tmp_path):
     assert "Anti-Drone Sensor Log Analysis Report" in html and "data:image/png;base64" in html
     for f in ("iq_glitches.csv", "uav_events.csv", "error_storms.csv", "summary.json"):
         assert (tmp_path / f).exists()
+
+
+# ---------------------------------------------------------------- reproducibility
+def test_generator_reproduces_bundled_samples_byte_for_byte(data):
+    """Same seed -> the generated files are identical to the ones in samples/."""
+    import hashlib
+    bundled = Path(__file__).resolve().parents[1] / "samples"
+    for name in ("iq_dump.bin", "rf_detections.csv", "radar_tracks.csv", "system_error.log", "ground_truth.json"):
+        a = hashlib.sha256((bundled / name).read_bytes()).hexdigest()
+        b = hashlib.sha256((data / name).read_bytes()).hexdigest()
+        assert a == b, f"{name} differs from the bundled sample"
