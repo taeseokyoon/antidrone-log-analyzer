@@ -1,0 +1,81 @@
+{
+  "iq": {
+    "emitters": [
+      {
+        "type": "FHSS_control",
+        "burst_ms": 0.4,
+        "period_ms": 1.0,
+        "hop_channels_mhz": [
+          -3.5,
+          -2.5,
+          -1.5,
+          -0.5,
+          0.5,
+          1.5,
+          2.5,
+          3.5
+        ]
+      },
+      {
+        "type": "video_downlink",
+        "center_mhz": -4.2,
+        "bandwidth_mhz": 1.6,
+        "start_s": 0.025
+      }
+    ],
+    "glitches": [
+      {
+        "type": "saturation",
+        "start_s": 0.0123,
+        "end_s": 0.01245
+      },
+      {
+        "type": "dropout",
+        "start_s": 0.0251,
+        "end_s": 0.0253048
+      },
+      {
+        "type": "spike",
+        "start_s": 0.0333,
+        "end_s": 0.0333003
+      },
+      {
+        "type": "spike",
+        "start_s": 0.0412,
+        "end_s": 0.0412003
+      },
+      {
+        "type": "dc_step",
+        "start_s": 0.045,
+        "end_s": 0.047
+      }
+    ]
+  },
+  "logs": {
+    "sorties": [
+      {
+        "id": 1,
+        "start": "2026-11-02T09:03:00",
+        "end": "2026-11-02T09:09:00",
+        "protocol": "DJI_OcuSync"
+      },
+      {
+        "id": 2,
+        "start": "2026-11-02T09:14:00",
+        "end": "2026-11-02T09:18:00",
+        "protocol": "FHSS_2.4G"
+      },
+      {
+        "id": 3,
+        "start": "2026-11-02T09:22:30",
+        "end": "2026-11-02T09:27:30",
+        "protocol": "DJI_OcuSync"
+      }
+    ],
+    "error_storm": {
+      "start": "2026-11-02T09:17:00",
+      "end": "2026-11-02T09:19:00",
+      "code": "CRC_ERROR"
+    }
+  }
+}

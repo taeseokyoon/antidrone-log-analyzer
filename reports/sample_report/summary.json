@@ -1,0 +1,165 @@
+{
+  "generated": "2026-11-14T15:42:06",
+  "inputs": {
+    "iq": "iq_dump.bin",
+    "rf": "rf_detections.csv",
+    "radar": "radar_tracks.csv",
+    "log": "system_error.log"
+  },
+  "iq": {
+    "samples": 500000,
+    "sample_rate": 10000000.0,
+    "glitches": [
+      {
+        "type": "saturation",
+        "start_s": 0.0123,
+        "end_s": 0.0124464,
+        "duration_us": 146.4,
+        "peak": 32767.0
+      },
+      {
+        "type": "dropout",
+        "start_s": 0.0251,
+        "end_s": 0.0253048,
+        "duration_us": 204.79999999999998,
+        "peak": 0.0
+      },
+      {
+        "type": "spike",
+        "start_s": 0.0333,
+        "end_s": 0.0333003,
+        "duration_us": 0.3,
+        "peak": 30000.0
+      },
+      {
+        "type": "spike",
+        "start_s": 0.0412,
+        "end_s": 0.0412003,
+        "duration_us": 0.3,
+        "peak": 30000.0
+      },
+      {
+        "type": "dc_step",
+        "start_s": 0.0446464,
+        "end_s": 0.047104,
+        "duration_us": 2457.6,
+        "peak": 4003.7
+      }
+    ],
+    "emitters": [
+      {
+        "emitter": "FHSS control link (drone C2 uplink)",
+        "bursts": 42,
+        "hop_channels": 8,
+        "channels_mhz": "-3.5, -2.5, -1.5, -0.5, +0.5, +1.5, +2.5, +3.5",
+        "burst_ms": 0.41,
+        "period_ms": 1.0
+      },
+      {
+        "emitter": "Wideband video downlink",
+        "segments": 3,
+        "center_mhz": -4.16,
+        "bandwidth_khz": 1523.0,
+        "first_seen_s": 0.0253,
+        "on_time_ms": 24.7
+      }
+    ]
+  },
+  "fusion": {
+    "stats": {
+      "rf_detections": 491,
+      "radar_plots": 997,
+      "rf_associated": 404,
+      "rf_only": 87,
+      "radar_only_plots": 140,
+      "confirmed_uav_tracks": 3,
+      "rf_false_alarm_rejected_pct": 17.9,
+      "radar_clutter_rejected_pct": 14.0
+    },
+    "events": [
+      {
+        "track_id": "T001",
+        "start": "2026-11-02T09:03:00.177000",
+        "end": "2026-11-02T09:08:59.028000",
+        "duration_s": 358.9,
+        "protocol": "DJI_OcuSync",
+        "rf_hits": 167,
+        "radar_plots": 347,
+        "min_range_m": 558.3,
+        "mean_rcs_dbsm": -16.9,
+        "max_rssi_dbm": -65.6,
+        "mean_bearing_err_deg": 3.21
+      },
+      {
+        "track_id": "T002",
+        "start": "2026-11-02T09:14:00.003000",
+        "end": "2026-11-02T09:17:59.260000",
+        "duration_s": 239.3,
+        "protocol": "FHSS_2.4G",
+        "rf_hits": 108,
+        "radar_plots": 230,
+        "min_range_m": 925.5,
+        "mean_rcs_dbsm": -16.9,
+        "max_rssi_dbm": -70.6,
+        "mean_bearing_err_deg": 3.19
+      },
+      {
+        "track_id": "T003",
+        "start": "2026-11-02T09:22:30.221000",
+        "end": "2026-11-02T09:27:29.248000",
+        "duration_s": 299.0,
+        "protocol": "DJI_OcuSync",
+        "rf_hits": 128,
+        "radar_plots": 280,
+        "min_range_m": 778.0,
+        "mean_rcs_dbsm": -17.0,
+        "max_rssi_dbm": -67.6,
+        "mean_bearing_err_deg": 3.4
+      }
+    ]
+  },
+  "errors": {
+    "events": 510,
+    "storms": [
+      {
+        "start": "2026-11-02T09:17:00",
+        "end": "2026-11-02T09:19:00",
+        "errors": 122,
+        "dominant_code": "CRC_ERROR",
+        "device": "LINK-ETH0"
+      }
+    ],
+    "top_codes": [
+      {
+        "level": "ERROR",
+        "device": "LINK-ETH0",
+        "code": "CRC_ERROR",
+        "count": 127
+      },
+      {
+        "level": "WARN",
+        "device": "RADAR-01",
+        "code": "GPS_WEAK",
+        "count": 9
+      },
+      {
+        "level": "ERROR",
+        "device": "RF-01",
+        "code": "ADC_OVERFLOW",
+        "count": 7
+      },
+      {
+        "level": "WARN",
+        "device": "RADAR-01",
+        "code": "TEMP_HIGH",
+        "count": 7
+      }
+    ],
+    "malformed": [
+      {
+        "line_no": 256,
+        "text": "### corrupted line \u0000\u0000 ###"
+      }
+    ]
+  }
+}

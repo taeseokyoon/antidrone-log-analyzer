@@ -1,0 +1,10 @@
+{
+  "sample_rate": 10000000.0,
+  "center_freq": 2440000000.0,
+  "duration": 0.05,
+  "noise_rms": 300.0,
+  "seed": 7,
+  "format": "int16_iq_interleaved_le",
+  "full_scale": 32767,
+  "n_samples": 500000
+}
