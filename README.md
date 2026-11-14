@@ -24,7 +24,7 @@
 | 전체 소스 코드 | [`antidrone_analyzer/`](antidrone_analyzer/) (5개 모듈), [`tests/`](tests/) |
 | 샘플 입력 파일 (더미 데이터) | [`samples/`](samples/) — IQ 덤프, RF·레이더 로그, 장비 에러 로그, 정답 파일 |
 | 패키지 의존성 목록 | [`requirements.txt`](requirements.txt) |
-| 발표 자료 (PPTX/PDF, 5~10장) | [`docs/ADLA_presentation.pdf`](docs/ADLA_presentation.pdf) · [`docs/ADLA_presentation.pptx`](docs/ADLA_presentation.pptx) — 10장, 슬라이드 노트에 발표 대본 포함 |
+| 발표 자료 (PPTX/PDF, 10~11장) | [`docs/ADLA_presentation.pdf`](docs/ADLA_presentation.pdf) · [`docs/ADLA_presentation.pptx`](docs/ADLA_presentation.pptx) — 11장 (기획 의도·시스템 구조·LLM 활용 및 디버깅·실행 결과 화면 포함), 슬라이드 노트에 발표 대본 포함 |
 | 실행 결과 화면 | [5. 실행 결과](#5-실행-결과), 샘플 리포트 [`reports/sample_report/report.html`](reports/sample_report/report.html) |
 
 ![report](docs/images/report_top.png)
