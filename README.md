@@ -99,7 +99,7 @@ antidrone-log-analyzer/
 ├── tests/test_pipeline.py # 정답 대비 자동 채점 테스트 9개
 ├── docs/                  # 발표자료(PPTX/PDF), 이미지
 ├── .github/workflows/ci.yml  # GitHub Actions: ruff 린트 + pytest + 샘플 리포트 아티팩트
-├── requirements.txt
+├── requirements.txt · pytest.ini · ruff.toml
 └── README.md
 ```
 
@@ -199,8 +199,9 @@ pytest -q
 | 5 | 1 GB 테스트에서 DC 스텝이 **500개가 아닌 559개** | 처음엔 청크 경계 문제로 의심했으나, 위치를 출력해 보니 **포화 구간마다** 추가 검출. 클리핑된 대진폭 잡음의 블록 평균이 0에서 벗어남(소량 데이터에선 블록 정렬에 따라 우연히 통과) | 포화·스파이크·드롭아웃이 포함된 블록은 DC 판정에서 **제외** → 500개 정확 |
 | 6 | 1 GB 처리 시 메모리 **1,154 MB** (스트리밍 설계 의도와 불일치) | `np.memmap`으로 접근한 페이지가 모두 RSS로 집계됨 | 청크마다 `np.fromfile(offset=…)`로 **명시적으로 읽기** → **207 MB** |
 | 7 | 리포트 표의 시간 값이 `0.012`로 뭉개지고 NaN이 그대로 표시됨 | 고정 소수점 3자리 포맷, 송신기 유형별로 열 구성이 다름 | 유효숫자 6자리 포맷, 빈 값은 공란 처리 |
+| 8 | 새로 clone한 깨끗한 가상환경에서 `pytest` 실행 시 `ModuleNotFoundError` | 개발 중에는 `python -m pytest`로 실행해 현재 폴더가 import 경로에 자동 포함되었음 (README·CI의 `pytest`와 다른 조건) | `pytest.ini`에 `pythonpath = .` 추가 → 채점자와 같은 조건(fresh clone + venv)에서 9 passed |
 
-> 💡 **배운 점**: LLM 에이전트는 코드를 빠르게 만들지만, 코드가 **맞는지는 정답이 있는 데이터로 확인**해야 합니다. 위 7건 중 5건은 “실행은 되지만 결과가 틀린” 버그였고, ground truth 비교와 대용량 회귀 테스트가 없었다면 발견하지 못했을 것입니다.
+> 💡 **배운 점**: LLM 에이전트는 코드를 빠르게 만들지만, 코드가 **맞는지는 정답이 있는 데이터로 확인**해야 합니다. 위 8건 중 5건은 “실행은 되지만 결과가 틀린” 버그였고, ground truth 비교와 대용량 회귀 테스트가 없었다면 발견하지 못했을 것입니다.
 
 ---
 
