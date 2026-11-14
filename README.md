@@ -3,7 +3,7 @@
 > **드론 탐지 장비의 기록(RF 원시데이터·RF/레이더 탐지 기록·장비 일지)을 자동으로 읽어서, 언제 무슨 일이 있었는지 보고서로 정리해 주는 Python 프로그램**
 
 [![CI](https://github.com/taeseokyoon/antidrone-log-analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/taeseokyoon/antidrone-log-analyzer/actions/workflows/ci.yml)
-![python](https://img.shields.io/badge/python-3.10%2B-blue) ![tests](https://img.shields.io/badge/tests-9%20passed-brightgreen)
+![python](https://img.shields.io/badge/python-3.10%2B-blue) ![tests](https://img.shields.io/badge/tests-10%20passed-brightgreen)
 
 | 항목 | 내용 |
 |---|---|
@@ -26,6 +26,7 @@
 | 패키지 의존성 목록 | [`requirements.txt`](requirements.txt) |
 | 발표 자료 (PPTX/PDF, 10~11장) | [`docs/ADLA_presentation.pdf`](docs/ADLA_presentation.pdf) · [`docs/ADLA_presentation.pptx`](docs/ADLA_presentation.pptx) — 11장 (기획 의도·시스템 구조·LLM 활용 및 디버깅·실행 결과 화면 포함), 슬라이드 노트에 발표 대본 포함 |
 | 실행 결과 화면 | [5. 실행 결과](#5-실행-결과), 샘플 리포트 [`reports/sample_report/report.html`](reports/sample_report/report.html) |
+| 재현성 (다른 사람이 같은 결과 확인) | [5.4 재현성](#54-재현성--다른-사람이-같은-결과를-얻을-수-있는가) |
 
 ![report](docs/images/report_top.png)
 
@@ -110,15 +111,18 @@ pip install -r requirements.txt
 # ① 포함된 샘플 데이터 분석 → reports/latest/report.html (브라우저로 열기)
 python -m antidrone_analyzer analyze --data samples --out reports/latest
 
-# ② 더미 데이터 새로 생성 (IQ 길이 지정: 0.05 s = 2 MB, 25 s = 1 GB)
+# ② 더미 데이터 새로 생성 (같은 --seed면 samples/와 똑같은 파일이 나옴. --iq-seconds로 길이 지정, 1초당 약 40 MB·생성 시 메모리 많이 사용)
 python -m antidrone_analyzer generate --out my_data --iq-seconds 0.05
 
 # ③ 개별 파일 지정 + 융합 기준 조정
 python -m antidrone_analyzer analyze --iq my.bin --rf rf.csv --radar radar.csv --log sys.log \
        --dt 2.0 --gate 15 --chunk 2000000 --out reports/site_A
 
-# ④ 테스트 (정답 대비 자동 채점 9개)
+# ④ 테스트 (정답 대비 자동 채점 10개)
 pytest -q
+
+# ⑤ 대용량 성능 재현 (샘플을 500번 이어 붙인 1 GB 파일로 측정, 끝나면 자동 삭제)
+python tools/benchmark.py              # 빠른 확인: --copies 50 (100 MB)
 ```
 
 실행 예시 출력:
@@ -165,7 +169,8 @@ antidrone-log-analyzer/
 │   └── report.py          # 그래프·CSV·HTML 보고서
 ├── samples/               # 바로 실행 가능한 샘플 입력 (2.1 MB)
 ├── reports/sample_report/ # 샘플 실행 결과 (HTML/CSV/PNG)
-├── tests/test_pipeline.py # 정답 대비 자동 채점 테스트 9개
+├── tests/test_pipeline.py # 정답 대비 자동 채점 + 재현성 테스트 10개
+├── tools/benchmark.py     # 대용량(1 GB) 성능·정확도 재현 스크립트
 ├── docs/                  # 발표자료(PPTX/PDF), 이미지
 ├── .github/workflows/ci.yml  # GitHub Actions: 린트 + 테스트 + 샘플 보고서 자동 실행
 ├── requirements.txt · pytest.ini · ruff.toml
@@ -219,13 +224,26 @@ antidrone-log-analyzer/
 | 통신 에러 폭주 | 09:17–09:19 CRC_ERROR | 09:17–09:19, `CRC_ERROR @ LINK-ETH0` |
 | 깨진 로그 줄 | 1줄 | 1줄 격리, 나머지 510개 이벤트 정상 처리 |
 
-### 5.3 대용량 성능 (1 GB RF 원시데이터 = 2.5억 샘플, 클라우드 VM 기준)
+### 5.3 대용량 성능 (1 GB RF 원시데이터 = 2.5억 샘플, 클라우드 VM 기준, `python tools/benchmark.py`로 재현)
 
 | 항목 | 결과 |
 |---|---|
 | 처리 시간 | 약 83 초 (약 12 MB/s) |
 | 최대 메모리 사용량 | **207 MB** (개선 전 1,154 MB → [7장](#7-문제-해결-과정) 참고) |
 | 정확도 | 글리치 2,500개 = 500회 × 5유형, **누락·중복 0** |
+
+
+### 5.4 재현성 — 다른 사람이 같은 결과를 얻을 수 있는가
+
+| 항목 | 재현 방법 | 검증 근거 |
+|---|---|---|
+| 실험 데이터 | `samples/`에 그대로 포함. 다시 만들려면 `python -m antidrone_analyzer generate` (난수 시드 고정) | 다시 생성한 파일이 `samples/`와 **바이트 단위로 동일** — 자동 테스트로 확인 |
+| 정답 | `samples/ground_truth.json` (일부러 심은 고장·드론 신호·에러 폭주 목록) | 모든 테스트가 이 정답과 비교해 채점 |
+| 분석 결과 | `python -m antidrone_analyzer analyze --data samples` | 결과 예시를 `reports/sample_report/`에 포함 |
+| 대용량 성능 | `python tools/benchmark.py` (1 GB) / `--copies 50` (100 MB) | 고장 검출 수가 정확히 (복사 횟수 × 정답 수)인지 자동 판정 |
+| 다른 컴퓨터에서 | GitHub Actions가 push마다 **새 가상머신(Python 3.10, 3.12)**에서 설치 → 테스트 10개 → 샘플 분석 → 100 MB 벤치마크를 실행 | [Actions 실행 기록](https://github.com/taeseokyoon/antidrone-log-analyzer/actions)에서 누구나 확인 가능 |
+
+> ※ 정확도(검출 개수·위치)는 어느 컴퓨터에서나 같게 나오지만, **처리 시간과 메모리 수치는 컴퓨터 사양에 따라 달라집니다.** (예: GitHub Actions 100 MB 기준 5.6~7.4초, 207~219 MB)
 
 ---
 
