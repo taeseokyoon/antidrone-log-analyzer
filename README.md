@@ -3,7 +3,7 @@
 > **안티드론(Counter-UAS) 현장의 센서 원시데이터·로그를 자동 분석하는 Python CLI 도구**
 > 원시 ADC/IQ 덤프의 이상치(Glitch) 탐지 → FFT 스펙트럼 기반 드론 송신기 식별 → RF·레이더 탐지 융합 → 장비 에러 로그 이상 구간 탐지 → HTML/CSV 리포트 자동 생성
 
-[![CI](https://github.com/YoonTaeseok/antidrone-log-analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/YoonTaeseok/antidrone-log-analyzer/actions/workflows/ci.yml)
+[![CI](https://github.com/taeseokyoon/antidrone-log-analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/taeseokyoon/antidrone-log-analyzer/actions/workflows/ci.yml)
 ![python](https://img.shields.io/badge/python-3.10%2B-blue) ![tests](https://img.shields.io/badge/tests-9%20passed-brightgreen)
 
 | 항목 | 내용 |
@@ -111,7 +111,7 @@ antidrone-log-analyzer/
 Python 3.10 이상이 필요합니다. (Windows / macOS / Linux 공통)
 
 ```bash
-git clone https://github.com/YoonTaeseok/antidrone-log-analyzer.git
+git clone https://github.com/taeseokyoon/antidrone-log-analyzer.git
 cd antidrone-log-analyzer
 python -m venv .venv
 # Windows: .venv\Scripts\activate      macOS/Linux: source .venv/bin/activate
